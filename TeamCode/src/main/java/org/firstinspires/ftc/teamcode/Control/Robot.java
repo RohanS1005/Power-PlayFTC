@@ -3,12 +3,15 @@ package org.firstinspires.ftc.teamcode.Control;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Drivers._Drivetrain;
 import org.firstinspires.ftc.teamcode.Drivers._IMU;
 import org.firstinspires.ftc.teamcode.Drivers._Motor;
+import org.firstinspires.ftc.teamcode.Drivers._Servo;
+import org.firstinspires.ftc.teamcode.Drivers._ServoGroup;
 
 public final class Robot {
 
@@ -18,6 +21,8 @@ public final class Robot {
 
     private static _Drivetrain _drivetrain;
     private static _IMU _imu;
+    private static _Motor _linearslide;
+    private static _ServoGroup _claw;
 
     public static final double MM_PER_INCH = 25.4;
     public static final double ANGLE_RANGE = 3;
@@ -62,6 +67,12 @@ public final class Robot {
                 case IMU:
                     setupIMU();
                     break;
+                case Linearslide:
+                    setupLinearslide();
+                    break;
+                case Claw:
+                    setupClaw();
+                    break;
             }
 
             setupSequence.append(type.name()).append(" ");
@@ -85,6 +96,8 @@ public final class Robot {
     private static void setupAutonomousPart2() {
         setupIMU();
         setupDrivetrain();
+        setupLinearslide();
+        setupClaw();
         //OpenCV is just for testing, not actual runs
     }
 
@@ -94,6 +107,8 @@ public final class Robot {
     private static void setupTeleOp2() {
         setupIMU();
         setupDrivetrain();
+        setupLinearslide();
+        setupClaw();
         //OpenCV is just for testing, not actual runs
     }
 
@@ -114,12 +129,27 @@ public final class Robot {
         _imu = new _IMU("imu", false, true);
     }
 
+    private static void setupLinearslide() {
+        double linearslideDiameter = 4; //Measure and change
+        _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
+                DcMotor.ZeroPowerBehavior.BRAKE, linearslideDiameter, true); //Add encoder if theres isn't already
+    }
+
+    private static void setupClaw() {
+        double startPosition = 0;
+        _Servo left = new _Servo("clawLeft", Servo.Direction.FORWARD, 0, 1, startPosition);
+        _Servo right = new _Servo("clawRight", Servo.Direction.REVERSE, 0, 1, startPosition);
+        _claw = new _ServoGroup(left, right);
+    }
+
     public static void update() {
         telemetry.addLine("Update1");
         _imu.update();
         telemetry.addLine("Update2");
         _drivetrain.update();
         telemetry.addLine("Update3");
+        _linearslide.update();
+        _claw.update();
 
         if (_isTurning) {
             if (Math.abs(_turnDegrees) > Math.max(_TURN_OFFSET_POSITIVE, _TURN_OFFSET_NEGATIVE)) {
@@ -168,6 +198,8 @@ public final class Robot {
         return _imu;
     }
 
+    public static _Motor getLinearslide() { return _linearslide; }
+
     public static boolean isTurning() {
         return _isTurning;
     }
@@ -178,7 +210,9 @@ public final class Robot {
         TeleOp1,
         TeleOp2,
         Drivetrain,
-        IMU
+        IMU,
+        Linearslide,
+        Claw
     }
 
     public enum FieldSide {
