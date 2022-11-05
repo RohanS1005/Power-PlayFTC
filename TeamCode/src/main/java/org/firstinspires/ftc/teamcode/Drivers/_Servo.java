@@ -16,6 +16,7 @@ public class _Servo {
     private final double _POSITION_PER_DEGREE;
     private final double _0_DEGREE_POSITION;
     private final double _INTERVAL_MS;
+    private final boolean _DEGREES;
 
     private final Servo _servo;
     private double _position;
@@ -44,6 +45,24 @@ public class _Servo {
         _servo = Robot.hardwareMap.servo.get(_NAME);
         _servo.setDirection(direction);
         _setDegree(startDegree);
+        _DEGREES = true;
+    }
+
+    public _Servo(String name, Servo.Direction direction, double min, double max, double startPosition) {
+        _NAME = name;
+        _MAX = max;
+        _MIN = min;
+        _POSITION_1 = 0;
+        _POSITION_2 = 0;
+        _ANGLE_1 = 0;
+        _ANGLE_2 = 0;
+        _POSITION_PER_DEGREE = 0;
+        _0_DEGREE_POSITION = 0;
+        _INTERVAL_MS = 10;
+        _servo = Robot.hardwareMap.servo.get(_NAME);
+        _servo.setDirection(direction);
+        _setPosition(startPosition);
+        _DEGREES = false;
     }
 
     public void update() {
@@ -73,7 +92,7 @@ public class _Servo {
     }
 
     public void setDegree(double degree) {
-        if (!_isBusy) {
+        if (!_isBusy && _DEGREES) {
             _setDegree(degree);
         }
     }
@@ -89,7 +108,9 @@ public class _Servo {
     }
 
     public void setSlowDegree(double degree, double durationMS) {
-        setSlowPosition(_degreeToPosition(degree), durationMS);
+        if (_DEGREES) {
+            setSlowPosition(_degreeToPosition(degree), durationMS);
+        }
     }
 
     public String getName() {
@@ -101,7 +122,10 @@ public class _Servo {
     }
 
     public double getDegree() {
-        return (_position - _0_DEGREE_POSITION) /_POSITION_PER_DEGREE;
+        if (_DEGREES) {
+            return (_position - _0_DEGREE_POSITION) / _POSITION_PER_DEGREE;
+        }
+        return 0;
     }
 
     public boolean isBusy() {
@@ -124,7 +148,9 @@ public class _Servo {
     }
 
     private void _setDegree(double degree) {
-        _setPosition(_clampPosition(_degreeToPosition(degree)));
+        if (_DEGREES) {
+            _setPosition(_clampPosition(_degreeToPosition(degree)));
+        }
     }
 
     private double _degreeToPosition(double degree) {
