@@ -23,6 +23,7 @@ public final class Robot {
     private static _IMU _imu;
     private static _Motor _linearslide;
     private static _ServoGroup _claw;
+    private static _Servo _claw6;
 
     public static final double MM_PER_INCH = 25.4;
     public static final double ANGLE_RANGE = 3;
@@ -73,6 +74,9 @@ public final class Robot {
                 case Claw:
                     setupClaw();
                     break;
+                case Claw6:
+                    setupClaw();
+                    break;
             }
 
             setupSequence.append(type.name()).append(" ");
@@ -98,6 +102,7 @@ public final class Robot {
         setupDrivetrain();
         setupLinearslide();
         setupClaw();
+        setupClaw6();
         //OpenCV is just for testing, not actual runs
     }
 
@@ -109,6 +114,7 @@ public final class Robot {
         setupDrivetrain();
         setupLinearslide();
         setupClaw();
+        setupClaw6();
         //OpenCV is just for testing, not actual runs
     }
 
@@ -130,7 +136,7 @@ public final class Robot {
     }
 
     private static void setupLinearslide() {
-        double linearslideDiameter = 4; //Measure and change
+        double linearslideDiameter = 50.8; //Measure and change
         _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, linearslideDiameter, true); //Add encoder if theres isn't already
     }
@@ -141,6 +147,9 @@ public final class Robot {
         _Servo right = new _Servo("clawRight", Servo.Direction.REVERSE, 0, 1, startPosition);
         _claw = new _ServoGroup(left, right);
     }
+    private static void setupClaw6() {
+        double startPosition = 0;
+        _Servo claw6 = new _Servo("claw6", Servo.Direction.FORWARD, 0, 1, startPosition);
 
     public static void update() {
         telemetry.addLine("Update1");
@@ -150,6 +159,7 @@ public final class Robot {
         telemetry.addLine("Update3");
         _linearslide.update();
         _claw.update();
+        _claw6.update();
 
         if (_isTurning) {
             if (Math.abs(_turnDegrees) > Math.max(_TURN_OFFSET_POSITIVE, _TURN_OFFSET_NEGATIVE)) {
@@ -213,6 +223,7 @@ public final class Robot {
         IMU,
         Linearslide,
         Claw
+        Claw6
     }
 
     public enum FieldSide {
