@@ -5,26 +5,30 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Control.Robot;
 import org.firstinspires.ftc.teamcode.Control._TeleOp;
 import org.firstinspires.ftc.teamcode.Drivers._Drivetrain;
-import org.firstinspires.ftc.teamcode.Drivers._PID;
 
 @TeleOp(group="FinalTeleOp")
 public class FinalTeleOp extends _TeleOp {
 
+    @Override
+    public void init() {
+        Robot.setup(hardwareMap, telemetry, Robot.SetupType.TeleOp1);
+        Robot.setFieldSide(Robot.FieldSide.RED);
+    }
+
+    @Override
+    public void init_loop() {
+    }
 
     @Override
     public void start() {
         Robot.setup(hardwareMap, telemetry, Robot.SetupType.TeleOp2);
         Robot.getIMU().willUpdate(true);
-
     }
 
     @Override
     public void loop() {
         Robot.update();
-
         telemetry.addLine("Drivetrain IMU: " + Robot.getIMU().getYaw());
-
-
 
         if(gamepad1.left_stick_x!=0 || gamepad1.left_stick_y!=0){
             double left_stick_y = -gamepad1.left_stick_y;
@@ -51,6 +55,15 @@ public class FinalTeleOp extends _TeleOp {
             Robot.getDrivetrain().stop();
         }
 
-
+        //left trigger up and right trigger down
+        if (gamepad1.left_trigger != 0) {
+            Robot.getLinearslide().runSpeed(0.5);
+        }
+        else if (gamepad1.right_trigger != 0) {
+            Robot.getLinearslide().runSpeed(-0.5);
+        }
+        else {
+            Robot.getLinearslide().stop();
+        }
     }
 }

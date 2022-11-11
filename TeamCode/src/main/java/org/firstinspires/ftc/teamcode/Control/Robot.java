@@ -75,7 +75,7 @@ public final class Robot {
                     setupClaw();
                     break;
                 case Claw6:
-                    setupClaw();
+                    setupClaw6();
                     break;
             }
 
@@ -136,7 +136,7 @@ public final class Robot {
     }
 
     private static void setupLinearslide() {
-        double linearslideDiameter = 50.8; //Measure and change
+        double linearslideDiameter = 2; //inches
         _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, linearslideDiameter, true); //Add encoder if theres isn't already
     }
@@ -149,7 +149,8 @@ public final class Robot {
     }
     private static void setupClaw6() {
         double startPosition = 0;
-        _Servo claw6 = new _Servo("claw6", Servo.Direction.FORWARD, 0, 1, startPosition);
+        _claw6 = new _Servo("claw6", Servo.Direction.FORWARD, 0, 1, startPosition);
+    }
 
     public static void update() {
         telemetry.addLine("Update1");
@@ -208,7 +209,17 @@ public final class Robot {
         return _imu;
     }
 
-    public static _Motor getLinearslide() { return _linearslide; }
+    public static _Motor getLinearslide() {
+        return _linearslide;
+    }
+
+    public static _ServoGroup getClaw() {
+        return _claw;
+    }
+
+    public static _Servo getClaw6() {
+        return _claw6;
+    }
 
     public static boolean isTurning() {
         return _isTurning;
@@ -222,7 +233,7 @@ public final class Robot {
         Drivetrain,
         IMU,
         Linearslide,
-        Claw
+        Claw,
         Claw6
     }
 
