@@ -22,7 +22,7 @@ public final class Robot {
     private static _Drivetrain _drivetrain;
     private static _IMU _imu;
     private static _Motor _linearslide;
-    private static _ServoGroup _claw;
+    private static _Servo _claw;
     private static _Servo _claw6;
 
     public static final double MM_PER_INCH = 25.4;
@@ -143,9 +143,8 @@ public final class Robot {
 
     private static void setupClaw() {
         double startPosition = 0;
-        _Servo left = new _Servo("clawLeft", Servo.Direction.FORWARD, 0, 1, startPosition);
-        _Servo right = new _Servo("clawRight", Servo.Direction.REVERSE, 0, 1, startPosition);
-        _claw = new _ServoGroup(left, right);
+        _claw = new _Servo("clawRight", Servo.Direction.REVERSE, 0, 1, startPosition);
+
     }
     private static void setupClaw6() {
         double startPosition = 0;
@@ -213,7 +212,7 @@ public final class Robot {
         return _linearslide;
     }
 
-    public static _ServoGroup getClaw() {
+    public static _Servo getClaw() {
         return _claw;
     }
 
