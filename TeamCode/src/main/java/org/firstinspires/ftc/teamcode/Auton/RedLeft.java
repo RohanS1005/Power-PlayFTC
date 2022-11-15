@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Control.Robot;
 import org.firstinspires.ftc.teamcode.Control._Autonomous;
 import org.firstinspires.ftc.teamcode.Drivers._Drivetrain;
 
-@Autonomous(group="Auton", preselectTeleOp = "CHOOSE TELEOP")
+@Autonomous(group="Auton", preselectTeleOp = "FinalTeleOp")
 public class RedLeft extends _Autonomous {
 
     private State _state;
