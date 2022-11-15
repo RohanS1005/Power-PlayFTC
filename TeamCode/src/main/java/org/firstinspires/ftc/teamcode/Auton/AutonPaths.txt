@@ -1,0 +1,15 @@
+1. Scan signal cone with color sensor
+
+path 1:
+2. Turn right and place preloaded cone on low junction
+3. Turn straight and pick up signal cone
+4. Move forward, turn right, and place signal cone on high junction
+
+path 2:
+2. Turn right, go forward 1 tile, turn left, move forward and place preloaded cone on high junction
+3. Turn left, foward 1 tile, turn right, move forward and pick up signal cone
+4. Turn around, move forward and place signal cone on high junction
+
+
+5. Turn around and come back to starting position
+6. Turn around and park in spot indicated by signal cone
