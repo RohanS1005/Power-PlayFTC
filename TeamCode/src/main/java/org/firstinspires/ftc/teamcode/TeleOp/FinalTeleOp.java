@@ -58,11 +58,11 @@ public class FinalTeleOp extends _TeleOp {
         //left trigger up and right trigger down
         // assume encoder count increase as linear slide moves up
         //change 5
-        if (gamepad1.left_trigger != 0 && Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() <5) {
-            Robot.getLinearslide().runSpeed(0.5);
+        if (gamepad2.left_bumper) {//&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() <34
+            Robot.getLinearslide().runSpeed(0.05);
         }
-        else if (gamepad1.right_trigger != 0 && Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()>0 ) {
-            Robot.getLinearslide().runSpeed(-0.5);
+        else if (gamepad2.right_bumper ) {// Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() <0
+            Robot.getLinearslide().runSpeed(-0.05);
         }
         else {
             Robot.getLinearslide().stop();
@@ -73,18 +73,18 @@ public class FinalTeleOp extends _TeleOp {
         }
         else if (gamepad1.a){
             // assume that 1 is down position
-            Robot.getClaw6().setSlowPosition(1, 5);
+            Robot.getClaw6().setSlowPosition(0.5, 5);
         }
         else {
             Robot.getClaw6().resetForNextRun();
         }
         if (gamepad1.b){
-            //assume 0 is open
-            Robot.getClaw().setPosition(0);
+      //      //assume 0 is open
+            Robot.getClaw().setPosition(0.5);
         }
-        else if (gamepad1.x){
-            //assume 1 is close
-            Robot.getClaw().setPosition(1);
+      else if (gamepad1.x){
+            //0 is close
+            Robot.getClaw().setPosition(0);
         }
     }
 }

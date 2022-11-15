@@ -30,6 +30,7 @@ public class _Servo {
         _NAME = name;
         _MAX = max;
         _MIN = min;
+        //Position 1 and 2 and angle 1 and 2 is used for position to degree calibration
         _POSITION_1 = Math.max(position_1, position_2);
         _POSITION_2 = Math.min(position_1, position_2);
         _ANGLE_1 = Math.max(angle_1, angle_2);
