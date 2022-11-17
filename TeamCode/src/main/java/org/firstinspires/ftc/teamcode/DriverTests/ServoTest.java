@@ -10,8 +10,7 @@ import org.firstinspires.ftc.teamcode.Drivers._Servo;
 @Autonomous(name="ServoTest", group="DriverTest")
 public class ServoTest extends _Autonomous {
 
-    private _Servo _claw;
-    private _Servo _claw6;
+    private _Servo _right;
     private States _state;
     private boolean _justEntered;
     private double _startTime;
@@ -20,24 +19,24 @@ public class ServoTest extends _Autonomous {
     @Override
     public void init() {
         Robot.setup(hardwareMap, telemetry);
-        _claw = new _Servo("claw",Servo.Direction.REVERSE, 0, 0.5, 0,0, 0, 0.5, 90);
-        _claw.setDegree(0);
+        _right = new _Servo("bucketRight",Servo.Direction.REVERSE, 0, 1, 0,0.17, 90, 0.51, 180);
+        _right.setDegree(0);
         _justEntered = true;
         _state = States.SET_POS;
     }
 
     @Override
     public void loop(){
-        _claw.update();
-        telemetry.addLine(String.valueOf(_claw.getName()));
-        telemetry.addLine(String.valueOf(_claw.getPosition()));
-        telemetry.addLine(String.valueOf(_claw.getDegree()));
-        telemetry.addLine(String.valueOf(_claw.isBusy()));
+        _right.update();
+        telemetry.addLine(String.valueOf(_right.getName()));
+        telemetry.addLine(String.valueOf(_right.getPosition()));
+        telemetry.addLine(String.valueOf(_right.getDegree()));
+        telemetry.addLine(String.valueOf(_right.isBusy()));
         telemetry.addLine(_state.name());
 
         switch(_state){
             case SET_POS:
-                _claw.setPosition(1);
+                _right.setPosition(1);
                 _state = States.WAIT_1;
                 break;
             case WAIT_1:
@@ -52,7 +51,7 @@ public class ServoTest extends _Autonomous {
                 }
                 break;
             case SET_DEG:
-                _claw.setDegree(90);
+                _right.setDegree(90);
                 _state = States.WAIT_2;
                 break;
             case WAIT_2:
@@ -69,9 +68,9 @@ public class ServoTest extends _Autonomous {
             case SET_SLOW_POS:
                 if (_justEntered) {
                     _justEntered = false;
-                    _claw.setSlowPosition(0.85, 2000);
+                    _right.setSlowPosition(0.85, 2000);
                 }
-                else if (!_claw.isBusy()) {
+                else if (!_right.isBusy()) {
                     _state = States.SET_SLOW_DEG;
                     _justEntered = true;
                 }
@@ -79,9 +78,9 @@ public class ServoTest extends _Autonomous {
             case SET_SLOW_DEG:
                 if (_justEntered) {
                     _justEntered = false;
-                    _claw.setSlowDegree(90, 2000);
+                    _right.setSlowDegree(90, 2000);
                 }
-                else if (!_claw.isBusy()) {
+                else if (!_right.isBusy()) {
                     _state = States.SET_SLOW_DEG_INTERRUPTED;
                     _justEntered = true;
                 }
@@ -89,9 +88,9 @@ public class ServoTest extends _Autonomous {
             case SET_SLOW_DEG_INTERRUPTED:
                 if (_justEntered) {
                     _justEntered = false;
-                    _claw.setSlowDegree(270, 4000);
+                    _right.setSlowDegree(270, 4000);
                 }
-                else if (_claw.getDegree() >= 225) {
+                else if (_right.getDegree() >= 225) {
                     _state = States.STOP;
                     _justEntered = true;
                 }
@@ -99,7 +98,7 @@ public class ServoTest extends _Autonomous {
             case STOP:
                 if (_justEntered) {
                     _justEntered = false;
-                    _claw.resetForNextRun();
+                    _right.resetForNextRun();
                 }
                 break;
         }

@@ -6,12 +6,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Drivers._Drivetrain;
 import org.firstinspires.ftc.teamcode.Drivers._IMU;
+import org.firstinspires.ftc.teamcode.Drivers._Color;
+
+
 import org.firstinspires.ftc.teamcode.Drivers._Motor;
 import org.firstinspires.ftc.teamcode.Drivers._Servo;
-import org.firstinspires.ftc.teamcode.Drivers._ServoGroup;
 
 public final class Robot {
 
@@ -21,6 +24,7 @@ public final class Robot {
 
     private static _Drivetrain _drivetrain;
     private static _IMU _imu;
+    private static _Color _Color;
     private static _Motor _linearslide;
     private static _Servo _claw;
     private static _Servo _claw6;
@@ -77,6 +81,9 @@ public final class Robot {
                 case Claw6:
                     setupClaw6();
                     break;
+                case Color:
+                    setupColor();
+                    break;
             }
 
             setupSequence.append(type.name()).append(" ");
@@ -120,19 +127,23 @@ public final class Robot {
 
     private static void setupDrivetrain() {
         double wheelDiameter = 96/MM_PER_INCH;
-        _Motor fr = new _Motor("motorFR", _Motor.Type.GOBILDA_312_RPM, DcMotorSimple.Direction.FORWARD,
+        _Motor fr = new _Motor("motorFR", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, wheelDiameter, true);
-        _Motor fl = new _Motor("motorFL", _Motor.Type.GOBILDA_312_RPM, DcMotorSimple.Direction.FORWARD,
+        _Motor fl = new _Motor("motorFL", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, wheelDiameter, true);
-        _Motor br = new _Motor("motorBR", _Motor.Type.GOBILDA_312_RPM, DcMotorSimple.Direction.FORWARD,
+        _Motor br = new _Motor("motorBR", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, wheelDiameter, true);
-        _Motor bl = new _Motor("motorBL", _Motor.Type.GOBILDA_312_RPM, DcMotorSimple.Direction.FORWARD,
+        _Motor bl = new _Motor("motorBL", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, wheelDiameter, true);
         _drivetrain = new _Drivetrain(fr, fl, br, bl, 1.0);
     }
 
     private static void setupIMU() {
         _imu = new _IMU("imu", false, true);
+    }
+
+    private static void setupColor() {
+        _Color = new _Color("color", 100, true);
     }
 
     private static void setupLinearslide() {
@@ -142,8 +153,8 @@ public final class Robot {
     }
 
     private static void setupClaw() {
-        double startPosition = 0;
-        _claw = new _Servo("clawRight", Servo.Direction.REVERSE, 0, 1, startPosition);
+        double startPosition = 1;
+        _claw = new _Servo("claw", Servo.Direction.REVERSE, 0, 1, startPosition);
 
     }
     private static void setupClaw6() {
@@ -160,6 +171,7 @@ public final class Robot {
         _linearslide.update();
         _claw.update();
         _claw6.update();
+        _Color.update();
 
         if (_isTurning) {
             if (Math.abs(_turnDegrees) > Math.max(_TURN_OFFSET_POSITIVE, _TURN_OFFSET_NEGATIVE)) {
@@ -208,6 +220,10 @@ public final class Robot {
         return _imu;
     }
 
+    public static _Color getColor() {
+        return _Color;
+    }
+
     public static _Motor getLinearslide() {
         return _linearslide;
     }
@@ -233,7 +249,8 @@ public final class Robot {
         IMU,
         Linearslide,
         Claw,
-        Claw6
+        Claw6,
+        Color
     }
 
     public enum FieldSide {
