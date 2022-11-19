@@ -28,7 +28,7 @@ public class FinalTeleOp extends _TeleOp {
     @Override
     public void loop() {
         Robot.update();
-        telemetry.addLine("Drivetrain IMU: " + Robot.getIMU().getYaw());
+        telemetry.addLine("Encoder Counts: " + Robot.getLinearslide().getCounts());
 
         if(gamepad1.left_stick_x!=0 || gamepad1.left_stick_y!=0){
             double left_stick_y = -gamepad1.left_stick_y;
@@ -58,20 +58,32 @@ public class FinalTeleOp extends _TeleOp {
         //left trigger up and right trigger down
         // assume encoder count increase as linear slide moves up
         //change 5
-        if (gamepad1.left_trigger != 0 ) { //&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() <5
-            Robot.getLinearslide().runSpeed(0.05);
+        if (gamepad2.left_trigger != 0 ) { //&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() >0
+            Robot.getLinearslide().runSpeed(-0.02);
         }
-        else if (gamepad1.right_trigger != 0 ) { //&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()>0
-            Robot.getLinearslide().runSpeed(-0.05);
+        else if (gamepad2.right_trigger != 0  ) {//&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()<95
+            Robot.getLinearslide().runSpeed(0.3);
+        }
+        else if (gamepad2.dpad_left){
+
+        }
+        else if (gamepad2.dpad_up){
+
+        }
+        else if (gamepad2.dpad_left){
+
+        }
+        else if (gamepad2.dpad_down){
+
         }
         else {
             Robot.getLinearslide().stop();
         }
-        if (gamepad1.y){
+        if (gamepad2.y){
             //assume that 0 is up position
             Robot.getClaw6().setSlowPosition(0, 5);
         }
-        else if (gamepad1.a){
+        else if (gamepad2.a){
             // assume that 1 is down position
             Robot.getClaw6().setSlowPosition(0.3, 5);
         }
@@ -86,5 +98,9 @@ public class FinalTeleOp extends _TeleOp {
             //assume 1 is close
             Robot.getClaw().setPosition(1);
         }
+        else{
+            Robot.getClaw().resetForNextRun();
+        }
+
     }
 }

@@ -35,6 +35,10 @@ public final class Robot {
     private static final double _TURN_OFFSET_POSITIVE = 18;
     private static final double _TURN_OFFSET_NEGATIVE = 15;
 
+    private static final double _LEVEL1 = 1135;
+    private static final double _LEVEL2 = 2999;
+    private static final double _Level3 = 4701;
+
     private static FieldSide _fieldSide;
     private static boolean _isTurning = false;
     private static double _startAngle;
@@ -147,8 +151,8 @@ public final class Robot {
     }
 
     private static void setupLinearslide() {
-        double linearslideDiameter = 2; //inches
-        _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
+        double linearslideDiameter = 1.25/2; //inches
+        _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.REVERSE,
                 DcMotor.ZeroPowerBehavior.BRAKE, linearslideDiameter, true); //Add encoder if theres isn't already
     }
 
@@ -171,7 +175,7 @@ public final class Robot {
         _linearslide.update();
         _claw.update();
         _claw6.update();
-        _Color.update();
+        //_Color.update();
 
         if (_isTurning) {
             if (Math.abs(_turnDegrees) > Math.max(_TURN_OFFSET_POSITIVE, _TURN_OFFSET_NEGATIVE)) {
