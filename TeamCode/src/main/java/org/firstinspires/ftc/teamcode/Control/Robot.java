@@ -24,7 +24,7 @@ public final class Robot {
 
     private static _Drivetrain _drivetrain;
     private static _IMU _imu;
-    private static _Color _Color;
+    private static _Color _color;
     private static _Motor _linearslide;
     private static _Servo _claw;
     private static _Servo _claw6;
@@ -147,7 +147,7 @@ public final class Robot {
     }
 
     private static void setupColor() {
-        _Color = new _Color("color", 100, true);
+        _color = new _Color("color");
     }
 
     private static void setupLinearslide() {
@@ -175,7 +175,6 @@ public final class Robot {
         _linearslide.update();
         _claw.update();
         _claw6.update();
-        //_Color.update();
 
         if (_isTurning) {
             if (Math.abs(_turnDegrees) > Math.max(_TURN_OFFSET_POSITIVE, _TURN_OFFSET_NEGATIVE)) {
@@ -225,7 +224,7 @@ public final class Robot {
     }
 
     public static _Color getColor() {
-        return _Color;
+        return _color;
     }
 
     public static _Motor getLinearslide() {
