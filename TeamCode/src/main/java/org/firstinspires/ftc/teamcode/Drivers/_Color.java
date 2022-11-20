@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Drivers;
 
+import android.graphics.Color;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -8,66 +9,61 @@ import org.firstinspires.ftc.teamcode.Control.Robot;
 public class _Color {
 
     private final String _NAME;
-    private final double _ELAPSED_TIME;
 
     private final ColorSensor _color;
-    private double _lastUpdateTime = 0;
-    private boolean _willUpdate;
-    private boolean _justStartedUpdating;
+    private int _red;
+    private int _blue;
+    private int _green;
+    private double _hue;
+    private double _sat;
+    private double _val;
 
-    private int _RED;
-    private int _GREEN;
-    private int _BLUE;
-
-    public _Color(String name, double elapsedTime, boolean willUpdate) {
+    public _Color(String name) {
         _NAME = name;
-        _ELAPSED_TIME = elapsedTime;
         _color = Robot.hardwareMap.get(ColorSensor.class, _NAME);
+//        enableLed(true);
     }
 
-
-    public void willUpdate(boolean willUpdate) {
-        _willUpdate = willUpdate;
-        _justStartedUpdating = _willUpdate;
-        _lastUpdateTime = Robot.runtime.milliseconds() - _ELAPSED_TIME;
+    public void enableLed(boolean state) {
+        _color.enableLed(state);
     }
 
-    public void update() {
-        if (_willUpdate && (Robot.runtime.milliseconds() >= _lastUpdateTime + _ELAPSED_TIME)) {
-            // fill this code
-            _RED = _color.red();
-            _GREEN = _color.green();
-            _BLUE = _color.blue();
+    public void fetchData() {
+        float hsv[] = {0F, 0F, 0F};
+        _red = _color.red();
+        _blue = _color.blue();
+        _green = _color.green();
+        Color.RGBToHSV(_red * 8, _green * 8, _blue * 8, hsv);
+        _hue = hsv[0];
+        _sat = hsv[1];
+        _val = hsv[2];
+    }
 
-            int[] colors = {_RED, _GREEN, _BLUE};
+    public int getRed() {
+        return _red;
+    }
 
-            // find the max color
-            int maxColor = 0;
-            for (int i = 0; i < colors.length; i++) {
-                if (colors[i] > maxColor) maxColor = colors[i];
-            }
+    public int getBlue() {
+        return _blue;
+    }
 
-            if (maxColor == _RED) {
-                // park in spot 1
-            } else if (maxColor == _GREEN) {
-                // park in spot 2
-            } else {
-                // park in spot 3
-            }
-        }
+    public int getGreen() {
+        return _green;
+    }
+
+    public double getHue() {
+        return _hue;
+    }
+
+    public double getSat() {
+        return _sat;
+    }
+
+    public double getVal() {
+        return _val;
     }
 
     public String getName() {
         return _NAME;
-    }
-
-    public int getRed(){
-        return _RED;
-    }
-    public int getGreen(){
-        return _GREEN;
-    }
-    public int getBlue(){
-        return _BLUE;
     }
 }
