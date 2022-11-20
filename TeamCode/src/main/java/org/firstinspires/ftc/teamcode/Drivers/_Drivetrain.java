@@ -163,9 +163,7 @@ public class _Drivetrain {
         cwfront(-1, -1, 0, 0),
         ccwfront(1, 1, 0, 0),
         cwback(0, 0, -1, -1),
-        ccwback(0, 0, 1, 1),
-        Turnleft(1, 1, 1, 1),
-        Turnright(-1, -1, -1, -1);
+        ccwback(0, 0, 1, 1);
 
         private final double[] directions;
 
