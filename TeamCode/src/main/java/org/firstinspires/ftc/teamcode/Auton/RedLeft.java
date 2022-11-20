@@ -11,7 +11,7 @@ public class RedLeft extends _Autonomous {
 
     private State _state;
     private boolean _justEntered;
-    private String parkingSpot;
+    private int _parkingSpot;
 
     @Override
     public void init() {
@@ -20,7 +20,6 @@ public class RedLeft extends _Autonomous {
 
     @Override
     public void init_loop() {
-
     }
 
     @Override
@@ -49,7 +48,7 @@ public class RedLeft extends _Autonomous {
             case RAISE_SLIDE:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runDistance(0.5, 10);
+                    Robot.getLinearslide().runDistance(0.5, 2);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
                     _state = State.Turn_Claw;
@@ -69,7 +68,7 @@ public class RedLeft extends _Autonomous {
             case OPEN_CLAW:
                 if(_justEntered){
                     _justEntered=false;
-                    Robot.getClaw().setPosition(0.7);
+                    Robot.getClaw().setPosition(Robot.CLAW_OPEN);
                 }
                 else if(!Robot.getClaw().isBusy()){
                     _state = State.Move_Left;
@@ -99,27 +98,6 @@ public class RedLeft extends _Autonomous {
             case Low_Linearslide:
                 if (_justEntered) {
                     _justEntered = false;
-                    //add color sensor stuff here
-                    int _RED = Robot.getColor().getRed();
-                    int _GREEN = Robot.getColor().getGreen();
-                    int _BLUE = Robot.getColor().getBlue();
-
-                    int[] colors = {_RED, _GREEN, _BLUE};
-
-                    // find the max color
-                    int maxColor = 0;
-                    for (int i = 0; i < colors.length; i++) {
-                        if (colors[i] > maxColor) maxColor = colors[i];
-                    }
-
-                    if (maxColor == _RED) {
-                        parkingSpot = "red";
-                    } else if (maxColor == _GREEN) {
-                        parkingSpot = "green";
-                    } else {
-                        parkingSpot = "blue";
-                    }
-
                     Robot.getLinearslide().runDistance(-0.5, 10);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
@@ -130,7 +108,7 @@ public class RedLeft extends _Autonomous {
             case Close_claw:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getClaw().setPosition(1);
+                    Robot.getClaw().setPosition(Robot.CLAW_CLOSED);
                 }
                 else if (!Robot.getClaw().isBusy()) {
                     _state = State.move_forward1;
@@ -150,7 +128,7 @@ public class RedLeft extends _Autonomous {
             case Turn_Right:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.Turnright);
+                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.cw);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
                     _state = State.AngleClaw;
@@ -177,6 +155,15 @@ public class RedLeft extends _Autonomous {
                     _justEntered = true;
                 }
                 break;
+            case move_forward2:
+                if (_justEntered) {
+                    _justEntered = false;
+                    Robot.getDrivetrain().runDistance(0.5, 3, _Drivetrain.Movements.forward);
+                }
+                else if (!Robot.getDrivetrain().isBusy()) {
+                    _state = State.Lowclaw;
+                    _justEntered = true;
+                }
             case Lowclaw:
                 if(_justEntered){
                     _justEntered=false;
@@ -190,7 +177,7 @@ public class RedLeft extends _Autonomous {
             case Open_Claw1:
                 if(_justEntered){
                     _justEntered=false;
-                    Robot.getClaw().setPosition(0.7);
+                    Robot.getClaw().setPosition(Robot.CLAW_OPEN);
                 }
                 else if(!Robot.getClaw().isBusy()){
                     _state = State.UpClaw;
@@ -220,7 +207,7 @@ public class RedLeft extends _Autonomous {
             case Turn_left:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.Turnright);
+                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.cw);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
                     _state = State.Move_back;
@@ -238,22 +225,19 @@ public class RedLeft extends _Autonomous {
                 }
                 break;
             case park:
-                if (_justEntered){
-                    _justEntered=false;
-                    if (parkingSpot.equals("red")){
-                        Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.left);
-                    }
-                    else if(parkingSpot.equals("green")){
-                        Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.right);
-                    }
-                    else {
-                        Robot.getDrivetrain().runDistance(0.5, 1, _Drivetrain.Movements.forward);
-                    }
-                }
-
-
-
-
+//                if (_justEntered){
+//                    _justEntered=false;
+//                    if (parkingSpot.equals("red")){
+//                        Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.left);
+//                    }
+//                    else if(parkingSpot.equals("green")){
+//                        Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.right);
+//                    }
+//                    else {
+//                        Robot.getDrivetrain().runDistance(0.5, 1, _Drivetrain.Movements.forward);
+//                    }
+//                }
+                break;
         }
     }
 
@@ -270,6 +254,7 @@ public class RedLeft extends _Autonomous {
         Turn_Right,
         AngleClaw,
         Lift_linearslide,
+        move_forward2,
         Lowclaw,
         Open_Claw1,
         UpClaw,
