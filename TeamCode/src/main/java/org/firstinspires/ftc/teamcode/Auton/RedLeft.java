@@ -196,7 +196,7 @@ public class RedLeft extends _Autonomous {
             case Lift_linearslide:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runTime(-.2,3501);
+                    Robot.getLinearslide().runTime(-.2,3500);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
                     _state = State.FORWARD;
