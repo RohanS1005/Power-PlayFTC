@@ -34,7 +34,7 @@ public class FinalTeleOp extends _TeleOp {
             double left_stick_y = -gamepad1.left_stick_y;
             double left_stick_x = gamepad1.left_stick_x;
             double joyStickAngle = (Math.toDegrees(Math.atan2(left_stick_y, left_stick_x)) + 360) % 360;
-            double speed = Math.hypot(left_stick_x, left_stick_y)/2.5;
+            double speed = Math.hypot(left_stick_x, left_stick_y)/1.5;//to make faster make lower
             Robot.getDrivetrain().runSpeedAngle(speed, joyStickAngle,0);
         }
         else if(gamepad1.right_stick_x!=0 || gamepad1.right_stick_y!=0){
