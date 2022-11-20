@@ -46,10 +46,10 @@ public class FinalTeleOp extends _TeleOp {
         }
 
         else if (gamepad1.left_stick_button) {
-            Robot.getDrivetrain().runSpeed(0.5, _Drivetrain.Movements.Turnleft);
+            Robot.getDrivetrain().runSpeed(0.5, _Drivetrain.Movements.ccw);
         }
         else if (gamepad1.right_stick_button) {
-            Robot.getDrivetrain().runSpeed(0.5, _Drivetrain.Movements.Turnright);
+            Robot.getDrivetrain().runSpeed(0.5, _Drivetrain.Movements.cw);
         }
         else {
             Robot.getDrivetrain().stop();
