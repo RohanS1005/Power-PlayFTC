@@ -6,6 +6,8 @@ import org.firstinspires.ftc.teamcode.Control.Robot;
 import org.firstinspires.ftc.teamcode.Control._Autonomous;
 import org.firstinspires.ftc.teamcode.Drivers._Drivetrain;
 
+import java.util.concurrent.TimeUnit;
+
 @Autonomous(group="Auton", preselectTeleOp = "FinalTeleOp")
 public class RedLeft extends _Autonomous {
 
@@ -38,7 +40,7 @@ public class RedLeft extends _Autonomous {
             case FORWARD_TO_LOW_POLE:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 5, _Drivetrain.Movements.forward);
+                    Robot.getDrivetrain().runDistance(0.3, 5, _Drivetrain.Movements.forward);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
                     _state = State.RAISE_SLIDE;
@@ -48,7 +50,7 @@ public class RedLeft extends _Autonomous {
             case RAISE_SLIDE:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runDistance(0.5, 2);
+                    Robot.getLinearslide().runTime(-.2,450);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
                     _state = State.Turn_Claw;
@@ -78,7 +80,7 @@ public class RedLeft extends _Autonomous {
             case Move_Left:
                 if(_justEntered){
                     _justEntered=false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.left);
+                    Robot.getDrivetrain().runDistance(0.2, 14.5, _Drivetrain.Movements.left);
                 }
                 else if(!Robot.getDrivetrain().isBusy()){
                     _state = State.Move_Forward;
@@ -88,37 +90,93 @@ public class RedLeft extends _Autonomous {
             case Move_Forward:
                 if(_justEntered){
                     _justEntered=false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.forward);
+                    Robot.getDrivetrain().runDistance(0.2, 18, _Drivetrain.Movements.forward);
                 }
                 else if(!Robot.getDrivetrain().isBusy()){
-                    _state = State.Lowlinslide;
+                    _state = State.LOWER;
                     _justEntered=true;
                 }
                 break;
-            case Low_Linearslide:
+//            case Sense:
+//                if (_justEntered) {
+//                    _justEntered = false;
+//                    double t1 = Robot.runtime.now(TimeUnit.MILLISECONDS);
+//
+//                    while(Robot.runtime.now(TimeUnit.MILLISECONDS)-t1 < 3000) {
+//                        if (Robot.getColor().getHue() < 10 && Robot.getColor().getHue() > 350) {//red
+//                            _parkingSpot = 1;
+//                        } else if (Robot.getColor().getHue() > 110 && Robot.getColor().getHue() < 140) {//green
+//                            _parkingSpot = 2;
+//                        } else if (Robot.getColor().getHue() < 255 && Robot.getColor().getHue() > 215) {//blue
+//                            _parkingSpot = 3;
+//                        } else {
+//                            _parkingSpot = 4;
+//                        }
+//                    }
+//
+//                    double t2 = Robot.runtime.now(TimeUnit.MILLISECONDS);
+//
+//                    while(Robot.runtime.now(TimeUnit.MILLISECONDS)-t2 < 1000) {
+//                        Robot.telemetry.update();
+//                        Robot.telemetry.addLine(String.valueOf(_parkingSpot));
+//                        Robot.telemetry.update();
+//                    }
+//
+//                    Robot.getDrivetrain().runDistance(0.2, 5, _Drivetrain.Movements.backward);
+//
+//                }
+//                else if(!Robot.getDrivetrain().isBusy()){
+//                    _state = State.LOWER;
+//                    _justEntered=true;
+//                }
+//                break;
+            case LOWER:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runDistance(-0.5, 10);
+                    Robot.getLinearslide().runTime(.2,420);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
                     _state = State.Close_claw;
                     _justEntered = true;
                 }
                 break;
+
             case Close_claw:
                 if (_justEntered) {
                     _justEntered = false;
                     Robot.getClaw().setPosition(Robot.CLAW_CLOSED);
+                    double t2 = Robot.runtime.now(TimeUnit.MILLISECONDS);
+                    while(Robot.runtime.now(TimeUnit.MILLISECONDS)-t2 < 1000) {
+                        Robot.telemetry.update();
+                        Robot.telemetry.addLine(String.valueOf(_parkingSpot));
+                        Robot.telemetry.update();
+                    }
                 }
                 else if (!Robot.getClaw().isBusy()) {
-                    _state = State.move_forward1;
+                    _state = State.AngleClaw;
                     _justEntered = true;
+                }
+                break;
+            case AngleClaw:
+                if(_justEntered){
+                    _justEntered=false;
+                    Robot.getClaw6().setPosition(0);
+                    double t2 = Robot.runtime.now(TimeUnit.MILLISECONDS);
+                    while(Robot.runtime.now(TimeUnit.MILLISECONDS)-t2 < 1000) {
+                        Robot.telemetry.update();
+                        Robot.telemetry.addLine(String.valueOf(_parkingSpot));
+                        Robot.telemetry.update();
+                    }
+                }
+                else if(!Robot.getClaw6().isBusy()){
+                    _state = State.move_forward1;
+                    _justEntered=true;
                 }
                 break;
             case move_forward1:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.forward);
+                    Robot.getDrivetrain().runDistance(0.5, 36, _Drivetrain.Movements.forward);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
                     _state = State.Turn_Right;
@@ -128,30 +186,30 @@ public class RedLeft extends _Autonomous {
             case Turn_Right:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.cw);
+                    Robot.getDrivetrain().runDistance(0.5, 6.75, _Drivetrain.Movements.cw);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
-                    _state = State.AngleClaw;
-                    _justEntered = true;
-                }
-                break;
-            case AngleClaw:
-                if(_justEntered){
-                    _justEntered=false;
-                    Robot.getClaw6().setPosition(0);
-                }
-                else if(!Robot.getClaw6().isBusy()){
                     _state = State.Lift_linearslide;
-                    _justEntered=true;
+                    _justEntered = true;
                 }
                 break;
             case Lift_linearslide:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runDistance(0.5, 10);
+                    Robot.getLinearslide().runTime(-.2,3500);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
-                    _state = State.Lowclaw;
+                    _state = State.FORWARD;
+                    _justEntered = true;
+                }
+                break;
+            case FORWARD:
+                if (_justEntered) {
+                    _justEntered = false;
+                    Robot.getDrivetrain().runDistance(0.3, 15.75, _Drivetrain.Movements.forward);
+                }
+                else if (!Robot.getDrivetrain().isBusy()) {
+                    _state = State.RAISE_SLIDE;
                     _justEntered = true;
                 }
                 break;
@@ -197,7 +255,7 @@ public class RedLeft extends _Autonomous {
             case Lowlinslide:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runDistance(-0.5, 10);
+                    Robot.getLinearslide().runTime(.2,1016);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
                     _state = State.Turn_left;
@@ -207,7 +265,7 @@ public class RedLeft extends _Autonomous {
             case Turn_left:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.cw);
+                    Robot.getDrivetrain().runDistance(0.5, 5, _Drivetrain.Movements.cw);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
                     _state = State.Move_back;
@@ -217,7 +275,7 @@ public class RedLeft extends _Autonomous {
             case Move_back:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getDrivetrain().runDistance(0.5, 10, _Drivetrain.Movements.backward);
+                    Robot.getDrivetrain().runDistance(0.5, 36, _Drivetrain.Movements.backward);
                 }
                 else if (!Robot.getDrivetrain().isBusy()) {
                     _state = State.park;
@@ -225,6 +283,17 @@ public class RedLeft extends _Autonomous {
                 }
                 break;
             case park:
+                if (_justEntered) {
+                    _justEntered = false;
+                    if (_parkingSpot==1) {//red
+                        Robot.getDrivetrain().runDistance(0.5, 7, _Drivetrain.Movements.left);
+
+                    } else if (_parkingSpot == 2) {//green
+                        Robot.getDrivetrain().runDistance(0.5, 1, _Drivetrain.Movements.forward);
+                    } else {
+                        Robot.getDrivetrain().runDistance(0.5, 7, _Drivetrain.Movements.right);
+                    }
+                }
 //                if (_justEntered){
 //                    _justEntered=false;
 //                    if (parkingSpot.equals("red")){
@@ -248,11 +317,13 @@ public class RedLeft extends _Autonomous {
         OPEN_CLAW,
         Move_Left,
         Move_Forward,
-        Low_Linearslide,
+        Sense,
+        LOWER,
         Close_claw,
+        FORWARD,
+        AngleClaw,
         move_forward1,
         Turn_Right,
-        AngleClaw,
         Lift_linearslide,
         move_forward2,
         Lowclaw,

@@ -155,7 +155,7 @@ public final class Robot {
 
     private static void setupLinearslide() {
         double linearslideDiameter = 1.25/2; //inches
-        _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.REVERSE,
+        _linearslide = new _Motor("linearslide", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, linearslideDiameter, true); //Add encoder if theres isn't already
     }
 

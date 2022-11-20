@@ -59,22 +59,18 @@ public class FinalTeleOp extends _TeleOp {
         // assume encoder count increase as linear slide moves up
         //change 5
         if (gamepad2.left_trigger != 0 ) { //&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() >0
-            Robot.getLinearslide().runSpeed(-0.02);
+            Robot.getLinearslide().runSpeed(0.02);
         }
         else if (gamepad2.right_trigger != 0  ) {//&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()<95
-            Robot.getLinearslide().runSpeed(0.3);
+            Robot.getLinearslide().runSpeed(-0.3);
         }
         else if (gamepad2.dpad_left){
-
         }
         else if (gamepad2.dpad_up){
-
         }
         else if (gamepad2.dpad_left){
-
         }
         else if (gamepad2.dpad_down){
-
         }
         else {
             Robot.getLinearslide().stop();
