@@ -31,8 +31,6 @@ public final class Robot {
 
     public static final double MM_PER_INCH = 25.4;
     public static final double ANGLE_RANGE = 3;
-    public static final double CLAW_OPEN = 0.7;
-    public static final double CLAW_CLOSED = 1;
 
     private static final double _TURN_OFFSET_POSITIVE = 18;
     private static final double _TURN_OFFSET_NEGATIVE = 15;
@@ -108,15 +106,14 @@ public final class Robot {
     }
 
     private static void setupAutonomousPart1() {
-        setupClaw();
-        setupClaw6();
     }
 
     private static void setupAutonomousPart2() {
         setupIMU();
         setupDrivetrain();
         setupLinearslide();
-        setupColor();
+        setupClaw();
+        setupClaw6();
         //OpenCV is just for testing, not actual runs
     }
 
@@ -160,7 +157,8 @@ public final class Robot {
     }
 
     private static void setupClaw() {
-        _claw = new _Servo("claw", Servo.Direction.REVERSE, 0, 1, CLAW_CLOSED);
+        double startPosition = 1;
+        _claw = new _Servo("claw", Servo.Direction.REVERSE, 0, 1, startPosition);
 
     }
     private static void setupClaw6() {
