@@ -106,24 +106,29 @@ public final class Robot {
     }
 
     private static void setupAutonomousPart1() {
+        setupClaw();
+        setupClaw6();
     }
+
+
 
     private static void setupAutonomousPart2() {
         setupIMU();
         setupDrivetrain();
         setupLinearslide();
-        setupClaw();
-        setupClaw6();
+        setupColor();
         //OpenCV is just for testing, not actual runs
     }
 
     private static void setupTeleOp1() {
+        setupClaw();
+        setupClaw6();
+        setupLinearslide();
     }
 
     private static void setupTeleOp2() {
         setupIMU();
         setupDrivetrain();
-        setupLinearslide();
         setupClaw();
         setupClaw6();
         //OpenCV is just for testing, not actual runs
