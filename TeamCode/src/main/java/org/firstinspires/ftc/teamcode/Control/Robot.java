@@ -110,8 +110,6 @@ public final class Robot {
         setupClaw6();
     }
 
-
-
     private static void setupAutonomousPart2() {
         setupIMU();
         setupDrivetrain();
@@ -129,8 +127,6 @@ public final class Robot {
     private static void setupTeleOp2() {
         setupIMU();
         setupDrivetrain();
-        setupClaw();
-        setupClaw6();
         //OpenCV is just for testing, not actual runs
     }
 
