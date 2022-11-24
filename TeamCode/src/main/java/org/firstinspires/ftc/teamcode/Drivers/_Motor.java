@@ -17,6 +17,7 @@ public class _Motor {
     private final DcMotor.RunMode _DEFAULT_RUNMODE;
 
     private final DcMotor _motor;
+    private double _typicalSpeed;
     private double _speed;
     private boolean _isBusy;
     private RunLimiter _runLimiter;
@@ -50,7 +51,7 @@ public class _Motor {
     }
 
     public void setTypicalSpeed(double speed) {
-        _speed = speed;
+        _typicalSpeed = speed;
     }
 
     public void update() {
@@ -72,7 +73,7 @@ public class _Motor {
 
     public void resetForNextRun() {
         _isBusy = false;
-        stop();
+        _setSpeed(0);
         _motor.setMode(_DEFAULT_RUNMODE);
     }
 
@@ -84,7 +85,7 @@ public class _Motor {
     }
 
     public void runSpeed() {
-        runSpeed(_speed);
+        runSpeed(_typicalSpeed);
     }
 
     public void runDistance(double speed, double distance) {
@@ -115,7 +116,7 @@ public class _Motor {
 
 
     public void runDistance(double distance) {
-        runDistance(_speed, distance);
+        runDistance(_typicalSpeed, distance);
     }
 
     public void runTime(double speed, double milliseconds) {
@@ -131,7 +132,7 @@ public class _Motor {
     }
 
     public void runTime(double milliseconds) {
-        runTime(_speed, milliseconds);
+        runTime(_typicalSpeed, milliseconds);
     }
 
     public void runDegrees(double speed, double degrees) {
@@ -162,7 +163,7 @@ public class _Motor {
     }
 
     public void runDegrees(double degrees) {
-        runDegrees(_speed, degrees);
+        runDegrees(_typicalSpeed, degrees);
     }
 
     public void runRotations(double speed, double rotations) {
@@ -170,11 +171,11 @@ public class _Motor {
     }
 
     public void runRotations(double rotations) {
-        runRotations(_speed, rotations);
+        runRotations(_typicalSpeed, rotations);
     }
 
     public void stop() {
-        _setSpeed(0);
+        resetForNextRun();
     }
 
     public int getCounts() {
@@ -197,6 +198,10 @@ public class _Motor {
         return _COUNTS_PER_DEGREE;
     }
 
+    public double getTypicalSpeed() {
+        return _typicalSpeed;
+    }
+
     public double getSpeed() {
         return _speed;
     }
@@ -214,11 +219,12 @@ public class _Motor {
     }
 
     private void _setSpeed(double speed) {
-        _motor.setPower(Math.max(Math.min(speed, 1), -1));
+        _speed = speed;
+        _motor.setPower(Math.max(Math.min(_speed, 1), -1));
     }
 
     private void _setSpeed() {
-        _setSpeed(_speed);
+        _setSpeed(_typicalSpeed);
     }
 
     public enum Type {

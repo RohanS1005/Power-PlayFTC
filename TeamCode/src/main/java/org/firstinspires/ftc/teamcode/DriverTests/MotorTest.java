@@ -36,7 +36,7 @@ public class MotorTest extends _Autonomous {
         telemetry.addLine(String.valueOf(_FR.getWheelDiameterInches()));
         telemetry.addLine(String.valueOf(_FR.getCountsPerInch()));
         telemetry.addLine(String.valueOf(_FR.getCountsPerDegree()));
-        telemetry.addLine(String.valueOf(_FR.getSpeed()));
+        telemetry.addLine(String.valueOf(_FR.getTypicalSpeed()));
         telemetry.addLine(String.valueOf(_FR.getCounts()));
         telemetry.addLine(String.valueOf(_FR.isBusy()));
         telemetry.addLine(_state.name());
