@@ -13,27 +13,22 @@ public class LinearslideTest extends _Autonomous {
 
     @Override
     public void init() {
-        Robot.setup(hardwareMap, telemetry, Robot.SetupType.AutonomousPart1);
+        Robot.setup(hardwareMap, telemetry, Robot.SetupType.Linearslide);
         _state = States.RUN_DIST;
         _justEntered = true;
     }
 
     @Override
-    public void start() {
-        Robot.setup(hardwareMap, telemetry, Robot.SetupType.AutonomousPart2);
-    }
-
-    @Override
     public void loop() {
-        Robot.update();
+        Robot.getLinearslide().update();
         telemetry.addLine(_state.name());
-        telemetry.addLine(String.valueOf(Robot.getLinearslide().getCounts()));
+        telemetry.addLine("Encoder Counts: " + Robot.getLinearslide().getCounts());
 
         switch (_state) {
             case RUN_DIST:
                 if (_justEntered) {
                     _justEntered = false;
-                    Robot.getLinearslide().runDistance(0.5, 2);
+                    Robot.getLinearslide().runDistance(0.1, 2);
                 }
                 else if (!Robot.getLinearslide().isBusy()) {
                     _state = States.STOP;
