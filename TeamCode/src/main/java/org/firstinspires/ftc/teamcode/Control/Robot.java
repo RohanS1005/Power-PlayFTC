@@ -216,6 +216,10 @@ public final class Robot {
         }
     }
 
+    public static void turn(double speed, double degrees) {
+        turn(speed, degrees, TurnAxis.Center);
+    }
+
     public static _Drivetrain getDrivetrain() {
         return _drivetrain;
     }
