@@ -30,7 +30,7 @@ public class RedLeft extends _Autonomous {
     public void start() {
         Robot.setup(hardwareMap, telemetry, Robot.SetupType.AutonomousPart2);
 
-        _state = State.Move_Forward;
+        _state = State.lilforward;
         _justEntered = true;
     }
 
@@ -44,61 +44,82 @@ public class RedLeft extends _Autonomous {
 
 
         switch (_state) {
-//            case FORWARD_TO_LOW_POLE:
-//                if (_justEntered) {
-//                    _justEntered = false;
-//                    Robot.getDrivetrain().runDistance(0.3, 5, _Drivetrain.Movements.forward);
-//                }
-//                else if (!Robot.getDrivetrain().isBusy()) {
-//                    _state = State.RAISE_SLIDE;
-//                    _justEntered = true;
-//                }
-//                break;
-//            case RAISE_SLIDE:
-//                if (_justEntered) {
-//                    _justEntered = false;
-//                    Robot.getLinearslide().runTime(-.2,450);
-//                }
-//                else if (!Robot.getLinearslide().isBusy()) {
-//                    _state = State.Move_Forward;
-//                    _justEntered = true;
-//                }
-//                break;
-//            case Turn_Claw:
-//                if(_justEntered){
-//                    _justEntered=false;
-//                    Robot.getClaw6().setPosition(0.3);
-//                }
-//                else if(!Robot.getClaw6().isBusy()){
-//                    _state = State.OPEN_CLAW;
-//                    _justEntered=true;
-//                }
-//                break;
-//            case OPEN_CLAW:
-//                if(_justEntered){
-//                    _justEntered=false;
-//                    Robot.getClaw().setPosition(0.7);
-//                }
-//                else if(!Robot.getClaw().isBusy()){
-//                    _state = State.Move_Left;
-//                    _justEntered=true;
-//                }
-//                break;
-//            case Move_Left:
-//                if(_justEntered){
-//                    _justEntered=false;
-//                    Robot.getDrivetrain().runDistance(0.2, 12.5, _Drivetrain.Movements.left);
-//                }
-//                else if(!Robot.getDrivetrain().isBusy()){
-//                    _state = State.Move_Forward;
-//                    _justEntered=true;
-//                }
-//                break;
+            case lilforward:
+                if (_justEntered){
+                    _justEntered=false;
+                    Robot.getDrivetrain().runDistance(0.3, 1.5, _Drivetrain.Movements.forward);
+                }
+                else if (!Robot.getDrivetrain().isBusy()){
+                    _state=State.Moveright;
+                    _justEntered=true;
+                }
+
+
+            case Moveright:
+                if (_justEntered){
+                    _justEntered=false;
+                    Robot.getDrivetrain().runDistance(0.3, 5, _Drivetrain.Movements.right);
+                }
+                else if (!Robot.getDrivetrain().isBusy()){
+                    _state=State.FORWARD_TO_LOW_POLE;
+                    _justEntered=true;
+                }
+
+            case FORWARD_TO_LOW_POLE:
+                if (_justEntered) {
+                    _justEntered = false;
+                    Robot.getDrivetrain().runDistance(0.3, 3.5, _Drivetrain.Movements.forward);
+                }
+                else if (!Robot.getDrivetrain().isBusy()) {
+                    _state = State.RAISE_SLIDE;
+                    _justEntered = true;
+                }
+                break;
+            case RAISE_SLIDE:
+                if (_justEntered) {
+                    _justEntered = false;
+                    Robot.getLinearslide().runDistance(0.5, 6 );
+                }
+                else if (!Robot.getLinearslide().isBusy()) {
+                    _state = State.Move_Forward;
+                    _justEntered = true;
+                }
+                break;
+            case Turn_Claw:
+                if(_justEntered){
+                    _justEntered=false;
+                    Robot.getClaw6().setPosition(0.3);
+                }
+                else if(!Robot.getClaw6().isBusy()){
+                    _state = State.OPEN_CLAW;
+                    _justEntered=true;
+                }
+                break;
+            case OPEN_CLAW:
+                if(_justEntered){
+                    _justEntered=false;
+                    Robot.getClaw().setPosition(0.7);
+                }
+                else if(!Robot.getClaw().isBusy()){
+                    _state = State.Move_Left;
+                    _justEntered=true;
+                }
+                break;
+            case Move_Left:
+                if(_justEntered){
+                    _justEntered=false;
+                    Robot.getDrivetrain().runDistance(0.2, 12.5, _Drivetrain.Movements.left);
+                }
+                else if(!Robot.getDrivetrain().isBusy()){
+                    _state = State.Move_Forward;
+                    _justEntered=true;
+                }
+                break;
 
             case Move_Forward:
                 if(_justEntered){
                     _justEntered=false;
-                    Robot.getDrivetrain().runDistance(0.2, 28, _Drivetrain.Movements.forward);
+                    Robot.getDrivetrain().runDistance(0.2, 23, _Drivetrain.Movements.forward);
                 }
                 else if(!Robot.getDrivetrain().isBusy()){
                     _state = State.Wait;
@@ -345,6 +366,8 @@ public class RedLeft extends _Autonomous {
     }
 
     private enum State {
+        lilforward,
+        Moveright,
         FORWARD_TO_LOW_POLE,
         RAISE_SLIDE,
         Turn_Claw,
