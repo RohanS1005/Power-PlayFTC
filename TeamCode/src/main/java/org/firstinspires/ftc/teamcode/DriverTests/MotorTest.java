@@ -22,7 +22,7 @@ public class MotorTest extends _Autonomous {
     @Override
     public void init() {
         Robot.setup(hardwareMap, telemetry);
-        _FR = new _Motor("motorFR", _Motor.Type.GOBILDA_435_RPM, DcMotorSimple.Direction.FORWARD,
+        _FR = new _Motor("motorFR", _Motor.Type.GOBILDA_312_RPM, DcMotorSimple.Direction.FORWARD,
                 DcMotor.ZeroPowerBehavior.BRAKE, 96/MM_PER_INCH, true);
         _FR.setTypicalSpeed(0.5);
         _state = States.RUN_DIST;
@@ -45,7 +45,7 @@ public class MotorTest extends _Autonomous {
             case RUN_DIST:
                 if (_justEntered) {
                     _justEntered = false;
-                    _FR.runDistance(12);
+                    _FR.runDistance(0.5, 20);
                 }
                 else if (!_FR.isBusy()) {
                     _state = States.RUN_TIME;

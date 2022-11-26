@@ -61,11 +61,11 @@ public class FinalTeleOp extends _TeleOp {
         //change 5
         if (gamepad2.right_trigger != 0) { //&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch() >0
             _triggerPressed = true;
-            Robot.getLinearslide().runSpeed(0.2);
+            Robot.getLinearslide().runSpeed(0.6);
         }
-        else if (gamepad2.left_trigger != 0) {//&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()<95
+        else if (gamepad2.left_trigger != 0 && Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()>0) {//&& Robot.getLinearslide().getCounts()/Robot.getLinearslide().getCountsPerInch()<95
             _triggerPressed = true;
-            Robot.getLinearslide().runSpeed(-0.2);
+            Robot.getLinearslide().runSpeed(-0.6);
         }
         else if (_triggerPressed) {
             _triggerPressed = false;
@@ -103,11 +103,11 @@ public class FinalTeleOp extends _TeleOp {
         }
         if (gamepad1.b){
             //assume 0 is open
-            Robot.getClaw().setPosition(0.7);
+            Robot.getClaw().setPosition(0.55);
         }
         else if (gamepad1.x){
             //assume 1 is close
-            Robot.getClaw().setPosition(1);
+            Robot.getClaw().setPosition(0.8);
         }
         else{
             Robot.getClaw().resetForNextRun();

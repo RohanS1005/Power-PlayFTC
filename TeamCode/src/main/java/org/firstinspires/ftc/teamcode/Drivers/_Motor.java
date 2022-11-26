@@ -96,7 +96,8 @@ public class _Motor {
             int sign = (speed < 0 || distance < 0 ? -1 : 1);
             _motor.setTargetPosition(_motor.getCurrentPosition() + (int) (sign * Math.abs(distance) * _COUNTS_PER_INCH));
             _motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            _setSpeed(sign * Math.abs(speed));
+            _setSpeed(speed);
+            _isBusy = _motor.isBusy();
         }
         else if (_USAGE == Usage.Circular) {
             stop();
@@ -113,6 +114,7 @@ public class _Motor {
             }
         }
     }
+
 
 
     public void runDistance(double distance) {

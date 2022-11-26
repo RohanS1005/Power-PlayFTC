@@ -50,7 +50,7 @@ public class DrivetrainTest extends _Autonomous {
             case RUN_DIST:
                 if (_justEntered) {
                     _justEntered = false;
-                    _drivetrain.runDistance(-12, _Drivetrain.Movements.forward);
+                    _drivetrain.runSpeedAngle(.3, 90,0);
                 }
                 else if (!_drivetrain.isBusy()) {
                     _state = States.RUN_TIME;
