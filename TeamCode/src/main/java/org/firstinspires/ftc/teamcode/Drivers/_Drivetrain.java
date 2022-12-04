@@ -30,14 +30,9 @@ public class _Drivetrain {
                 motorNotBusy = motorNotBusy || (!_drivetrain[i].isBusy() && _movement[i] != 0);
             }
             if (motorNotBusy) {
-                resetForNextRun();
+                stop();
             }
         }
-    }
-
-    public void resetForNextRun() {
-        _isBusy = false;
-        for (_Motor motor : _drivetrain) motor.resetForNextRun();
     }
 
     public void runSpeed(double speed, double[] movement) {
@@ -60,9 +55,9 @@ public class _Drivetrain {
         if (!_isBusy && speed != 0) {
             _isBusy = true;
             _movement = movement;
-            int sign = (speed < 0 || distance < 0 ? -1 : 1);
+            int sign = (speed < 0 ^ distance < 0 ? -1 : 1);
             for (int i = 0; i < _MOTOR_NUM; ++i)
-                _drivetrain[i].runDistance(sign * Math.abs(speed) * _movement[i], Math.abs(distance));
+                _drivetrain[i].runDistance(speed * _movement[i], distance);
         }
     }
 
@@ -117,6 +112,7 @@ public class _Drivetrain {
     }
 
     public void stop() {
+        _isBusy = false;
         for (int i = 0; i < _MOTOR_NUM; ++i) _drivetrain[i].stop();
     }
 

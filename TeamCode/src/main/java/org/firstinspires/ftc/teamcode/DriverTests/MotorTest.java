@@ -45,7 +45,7 @@ public class MotorTest extends _Autonomous {
             case RUN_DIST:
                 if (_justEntered) {
                     _justEntered = false;
-                    _FR.runDistance(0.5, 20);
+                    _FR.runDistance(20);
                 }
                 else if (!_FR.isBusy()) {
                     _state = States.RUN_TIME;
@@ -70,7 +70,7 @@ public class MotorTest extends _Autonomous {
                     _elapsedTime = 3000;
                 }
                 else if (Robot.runtime.milliseconds() >= _startTime + _elapsedTime) {
-                    _FR.resetForNextRun();
+                    _FR.stop();
                     _state = States.SWITCH_MODE;
                     _justEntered = true;
                 }

@@ -59,22 +59,16 @@ public class _Motor {
             switch (_runLimiter) {
                 case Magnitude:
                     if (!_motor.isBusy()) {
-                        resetForNextRun();
+                        stop();
                     }
                     break;
                 case Time:
                     if (Robot.runtime.milliseconds() >= _startTime + _elapsedTime) {
-                        resetForNextRun();
+                        stop();
                     }
                     break;
             }
         }
-    }
-
-    public void resetForNextRun() {
-        _isBusy = false;
-        _setSpeed(0);
-        _motor.setMode(_DEFAULT_RUNMODE);
     }
 
     public void runSpeed(double speed) {
@@ -92,12 +86,11 @@ public class _Motor {
         if (!_isBusy && speed != 0 && _USAGE == Usage.Linear && _HAS_ENCODER) {
             _isBusy = true;
             _runLimiter = RunLimiter.Magnitude;
-            stop();
-            int sign = (speed < 0 || distance < 0 ? -1 : 1);
+            _zeroSpeed();
+            int sign = (speed < 0 ^ distance < 0 ? -1 : 1);
             _motor.setTargetPosition(_motor.getCurrentPosition() + (int) (sign * Math.abs(distance) * _COUNTS_PER_INCH));
             _motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            _setSpeed(speed);
-            _isBusy = _motor.isBusy();
+            _setSpeed(sign * Math.abs(speed));
         }
         else if (_USAGE == Usage.Circular) {
             stop();
@@ -115,8 +108,6 @@ public class _Motor {
         }
     }
 
-
-
     public void runDistance(double distance) {
         runDistance(_typicalSpeed, distance);
     }
@@ -125,7 +116,7 @@ public class _Motor {
         if (!_isBusy && speed != 0) {
             _isBusy = true;
             _runLimiter = RunLimiter.Time;
-            stop();
+            _zeroSpeed();
             _startTime = Robot.runtime.milliseconds();
             _elapsedTime = milliseconds;
             _motor.setMode(_DEFAULT_RUNMODE);
@@ -141,7 +132,7 @@ public class _Motor {
         if (!_isBusy && speed != 0 && _USAGE == Usage.Circular && _HAS_ENCODER) {
             _isBusy = true;
             _runLimiter = RunLimiter.Magnitude;
-            stop();
+            _zeroSpeed();
             int sign = (speed < 0 || degrees < 0 ? -1 : 1);
 
             _motor.setTargetPosition(_motor.getCurrentPosition() + (int) (sign * Math.abs(degrees) * _COUNTS_PER_DEGREE));
@@ -177,11 +168,22 @@ public class _Motor {
     }
 
     public void stop() {
-        resetForNextRun();
+        _isBusy = false;
+        _setSpeed(0);
+        _motor.setMode(_DEFAULT_RUNMODE);
+    }
+
+    public void _zeroSpeed() {
+        _setSpeed(0);
+        _motor.setMode(_DEFAULT_RUNMODE);
     }
 
     public int getCounts() {
         return _motor.getCurrentPosition();
+    }
+
+    public int getTargetPosition() {
+        return _motor.getTargetPosition();
     }
 
     public String getName() {
@@ -217,7 +219,7 @@ public class _Motor {
         _motor.setDirection(direction);
         _motor.setZeroPowerBehavior(zeroPowerBehavior);
         _motor.setMode(_DEFAULT_RUNMODE);
-        stop();
+        _zeroSpeed();
     }
 
     private void _setSpeed(double speed) {

@@ -50,7 +50,7 @@ public class DrivetrainTest extends _Autonomous {
             case RUN_DIST:
                 if (_justEntered) {
                     _justEntered = false;
-                    _drivetrain.runSpeedAngle(.3, 90,0);
+                    _drivetrain.runDistance(-10, _Drivetrain.Movements.forward);
                 }
                 else if (!_drivetrain.isBusy()) {
                     _state = States.RUN_TIME;
@@ -60,7 +60,7 @@ public class DrivetrainTest extends _Autonomous {
             case RUN_TIME:
                 if (_justEntered) {
                     _justEntered = false;
-                    _drivetrain.runTime(0.55, 2000, _Drivetrain.Movements.forward);
+                    _drivetrain.runTime(0.25, 1000, _Drivetrain.Movements.forward);
                 }
                 else if (!_drivetrain.isBusy()) {
                     _state = States.RUN_INTERRUPTED;
@@ -75,7 +75,7 @@ public class DrivetrainTest extends _Autonomous {
                     _elapsedTime = 1000;
                 }
                 else if (Robot.runtime.milliseconds() >= _startTime + _elapsedTime) {
-                    _drivetrain.resetForNextRun();
+                    _drivetrain.stop();
                     _state = States.RUN_45_INTERRUPTED;
                     _justEntered = true;
                 }
@@ -85,10 +85,10 @@ public class DrivetrainTest extends _Autonomous {
                     _justEntered = false;
                     _drivetrain.runSpeedAngle(0.25, 45, 0);
                     _startTime = Robot.runtime.milliseconds();
-                    _elapsedTime = 5000;
+                    _elapsedTime = 3000;
                 }
                 else if (Robot.runtime.milliseconds() >= _startTime + _elapsedTime) {
-                    _drivetrain.resetForNextRun();
+                    _drivetrain.stop();
                     _state = States.RUN_135_INTERRUPTED;
                     _justEntered = true;
                 }
@@ -98,10 +98,10 @@ public class DrivetrainTest extends _Autonomous {
                     _justEntered = false;
                     _drivetrain.runSpeedAngle(-135, 0);
                     _startTime = Robot.runtime.milliseconds();
-                    _elapsedTime = 2000;
+                    _elapsedTime = 1000;
                 }
                 else if (Robot.runtime.milliseconds() >= _startTime + _elapsedTime) {
-                    _drivetrain.resetForNextRun();
+                    _drivetrain.stop();
                     _state = States.RUN_SPEED;
                     _justEntered = true;
                 }
@@ -110,6 +110,13 @@ public class DrivetrainTest extends _Autonomous {
                 if (_justEntered) {
                     _justEntered = false;
                     _drivetrain.runSpeed(_Drivetrain.Movements.cw);
+                    _startTime = Robot.runtime.milliseconds();
+                    _elapsedTime = 2000;
+                }
+                else if (Robot.runtime.milliseconds() >= _startTime + _elapsedTime) {
+                    _drivetrain.stop();
+                    _state = States.RUN_SPEED;
+                    _justEntered = true;
                 }
                 break;
             case STOP:
